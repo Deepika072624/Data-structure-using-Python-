@@ -1,48 +1,62 @@
-graph = {}
-n = int(input("Enter number of vertices: "))
-for i in range(n):
-    vertex = int(input("Enter vertex: "))
-    graph[vertex] = []
-e = int(input("Enter number of edges: "))
+n = int(input("Enter the number of vertices: "))
+
+graph = [[] for _ in range(n)]
+
+e = int(input("Enter the number of edges: "))
+
+print("Enter the edges:")
+
 for i in range(e):
-    u = int(input("Enter starting vertex of edge: "))
-    v = int(input("Enter ending vertex of edge: "))
+    u, v = map(int, input().split())
     graph[u].append(v)
-print("\nGraph:")
-for vertex in graph:
-    print(vertex, "->", graph[vertex])
+    graph[v].append(u)
+
+
 def bfs(start):
-    visited = []
+    visited = [False] * n
     queue = [start]
+    visited[start] = True
+
+    print("BFS Traversal:", end=" ")
 
     while queue:
         vertex = queue.pop(0)
+        print(vertex, end=" ")
 
-        if vertex not in visited:
-            visited.append(vertex)
+        for neighbour in graph[vertex]:
+            if not visited[neighbour]:
+                visited[neighbour] = True
+                queue.append(neighbour)
 
-            for neighbour in graph[vertex]:
-                if neighbour not in visited:
-                    queue.append(neighbour)
+    print()
 
-    return visited
+
+
 def dfs(start):
-    visited = []
+    visited = [False] * n
     stack = [start]
+
+    print("DFS Traversal:", end=" ")
 
     while stack:
         vertex = stack.pop()
 
-        if vertex not in visited:
-            visited.append(vertex)
+        if not visited[vertex]:
+            visited[vertex] = True
+            print(vertex, end=" ")
 
             for neighbour in reversed(graph[vertex]):
-                if neighbour not in visited:
+                if not visited[neighbour]:
                     stack.append(neighbour)
 
-    return visited
-start = int(input("\nEnter starting vertex: "))
-print("\nBFS Traversal:")
-print(" -> ".join(map(str, bfs(start))))
-print("\nDFS Traversal:")
-print(" -> ".join(map(str, dfs(start))))
+    print()
+
+
+start = int(input("Enter the starting vertex: "))
+
+bfs(start)
+dfs(start)
+
+
+           
+
